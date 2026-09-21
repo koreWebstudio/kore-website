@@ -23,7 +23,7 @@ body {
 
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-    background-image: url('../assets/background1.jpeg');
+    background-image: url('..//assets/background1.jpeg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -38,7 +38,7 @@ body::before {
     width: calc(100% + 40px);
     height: calc(100% + 40px);
     
-    background-image: url('../assets/background1.jpeg');
+    background-image: url('..//assets/background1.jpeg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1802,12 +1802,55 @@ a.project-card {
 }
 
 
-
 @media screen and (max-height: 680px) {
     .projects {
         height: auto;
         min-height: 100vh;
     }
+}
+
+@media screen and (max-width: 480px) {
+
+    /* 1. Navbar e Espaçamentos */
+    .navbar {
+        padding: 12px 16px; /* Reduz a margem das bordas da ecrã */
+    }
+
+    /* 2. Reduzir o tamanho da Logo */
+    .logo-container {
+        width: 160px;  /* Ajusta para a logo não ocupar a ecrã toda */
+        height: 50px;
+    }
+
+    /* 3. Textos do Hero (Títulos e Parágrafos) */
+    h1, .hero-title {
+        font-size: 1.8rem; /* Reduz o tamanho da tipografia principal */
+        line-height: 1.2;
+    }
+
+    p, .hero-description {
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    /* 4. Botão de Chamada para Ação (CTA) */
+    .btn-primary, .cta-button {
+        width: 100%; /* Faz o botão ocupar a largura total do telemóvel */
+        padding: 14px 20px;
+        text-align: center;
+    }
+
+    /* 5. Imagem / Vídeo do Hero ou Ilustrações */
+    .hero-image, .hero-right {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    /* 6. Desativar background-attachment: fixed se a imagem tremer no iOS */
+    body {
+        background-attachment: scroll;
+    }
+
 }
 
 /*------------------- Media Queries ----------------------*/

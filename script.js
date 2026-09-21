@@ -349,44 +349,107 @@ document.addEventListener('DOMContentLoaded', () => {
     /* 3. 3D VIDEO CONTROL FOLLOWING MOUSE MOVEMENT */
     const video = document.querySelector('#characterVideo');
 
-    if (video && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    if (video) {
+
         let targetTime = 0;
-        let currentTime = 0;
-        let isAnimationFrameActive = false;
 
-        // Garante que o vídeo está pausado para controlo manual
-        video.pause();
+        let prevX = null;
 
-        const updateVideoSeek = () => {
-            if (!video.duration || isNaN(video.duration)) return;
+        let isSeeking = false;
 
-            // Suavização (Lerp) para evitar rotação brusca
-            currentTime += (targetTime - currentTime) * 0.1;
+        const sensitivity = 0.9;
 
-            if (Math.abs(targetTime - currentTime) > 0.001) {
-                video.currentTime = currentTime;
-                requestAnimationFrame(updateVideoSeek);
-            } else {
+
+
+        video.addEventListener('loadedmetadata', () => {
+
+            video.currentTime = 0;
+
+        });
+
+
+
+        video.addEventListener('seeked', () => {
+
+            if (Math.abs(video.currentTime - targetTime) > 0.01) {
+
                 video.currentTime = targetTime;
-                isAnimationFrameActive = false;
+
+            } else {
+
+                isSeeking = false;
+
             }
-        };
+
+        });
+
+
 
         window.addEventListener('mousemove', (e) => {
-            if (!video.duration || isNaN(video.duration)) return;
 
-            // Calcula a percentagem da posição X do rato na tela (0 a 1)
-            const mouseRatio = Math.max(0, Math.min(1, e.clientX / window.innerWidth));
-            
-            // Mapeia para a duração do vídeo
-            targetTime = mouseRatio * video.duration;
+            if (!video.duration || Number.isNaN(video.duration)) {
 
-            if (!isAnimationFrameActive) {
-                isAnimationFrameActive = true;
-                requestAnimationFrame(updateVideoSeek);
+                prevX = e.clientX;
+
+                return;
+
             }
+
+
+
+            if (prevX === null) {
+
+                prevX = e.clientX;
+
+                return;
+
+            }
+
+
+
+            const delta = e.clientX - prevX;
+
+            prevX = e.clientX;
+
+
+
+            if (delta === 0) return;
+
+
+
+            const timeOffset = (delta / window.innerWidth) * sensitivity * video.duration;
+
+            let nextTarget = targetTime + timeOffset;
+
+
+
+            nextTarget = Math.max(0, Math.min(video.duration, nextTarget));
+
+            targetTime = nextTarget;
+
+
+
+            if (!isSeeking) {
+
+                isSeeking = true;
+
+                video.currentTime = nextTarget;
+
+            }
+
         }, { passive: true });
-    }
+
+
+
+        window.addEventListener('mouseleave', () => {
+
+            prevX = null;
+
+        });
+
+    } 
+
+
 
     /* 4. HIGHLIGHT */
     const highlights = document.querySelectorAll('.highlight');

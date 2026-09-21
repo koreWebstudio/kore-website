@@ -298,121 +298,149 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* 1. GSAP ANIMATION ON SCROLL */
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    // Respeita as preferências de acessibilidade do utilizador (Motion)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
         gsap.registerPlugin(ScrollTrigger);
 
         gsap.to(".hero-content", {
             y: -40,
             opacity: 0.8,
+            force3D: true, // Força aceleração por GPU
             scrollTrigger: {
                 trigger: ".hero",
                 start: "top top",
                 end: "bottom top",
-                scrub: true
+                scrub: 1 // Adiciona um pequeno amortecimento (1s) para o scroll ficar extremamente suave
             }
         });
     }
+}
 
     /* 2. REVEAL OBSERVER */
-    const observerOptions = {
-        root: null,
-        threshold: 0.25
-    };
-
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            } else {
-                entry.target.classList.remove('active');
-            }
-        });
-    }, observerOptions);
-
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-    revealElements.forEach(el => revealObserver.observe(el));
+
+    if (revealElements.length > 0) {
+        if ('IntersectionObserver' in window) {
+            const observerOptions = {
+                root: null,
+                threshold: 0.15,
+                rootMargin: '0px 0px -40px 0px'
+            };
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Para de observar o elemento após a animação para otimizar performance
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            revealElements.forEach(el => revealObserver.observe(el));
+        } else {
+            // Fallback para browsers antigos
+            revealElements.forEach(el => el.classList.add('active'));
+        }
+    }
 
     /* 3. 3D VIDEO CONTROL FOLLOWING MOUSE MOVEMENT */
     const video = document.querySelector('#characterVideo');
-    if (video) {
+
+    if (video && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         let targetTime = 0;
-        let prevX = null;
-        let isSeeking = false;
-        const sensitivity = 0.9;
+        let currentTime = 0;
+        let isAnimationFrameActive = false;
 
-        video.addEventListener('loadedmetadata', () => {
-            video.currentTime = 0;
-        });
+        // Garante que o vídeo está pausado para controlo manual
+        video.pause();
 
-        video.addEventListener('seeked', () => {
-            if (Math.abs(video.currentTime - targetTime) > 0.01) {
-                video.currentTime = targetTime;
+        const updateVideoSeek = () => {
+            if (!video.duration || isNaN(video.duration)) return;
+
+            // Suavização (Lerp) para evitar rotação brusca
+            currentTime += (targetTime - currentTime) * 0.1;
+
+            if (Math.abs(targetTime - currentTime) > 0.001) {
+                video.currentTime = currentTime;
+                requestAnimationFrame(updateVideoSeek);
             } else {
-                isSeeking = false;
+                video.currentTime = targetTime;
+                isAnimationFrameActive = false;
             }
-        });
+        };
 
         window.addEventListener('mousemove', (e) => {
-            if (!video.duration || Number.isNaN(video.duration)) {
-                prevX = e.clientX;
-                return;
-            }
+            if (!video.duration || isNaN(video.duration)) return;
 
-            if (prevX === null) {
-                prevX = e.clientX;
-                return;
-            }
+            // Calcula a percentagem da posição X do rato na tela (0 a 1)
+            const mouseRatio = Math.max(0, Math.min(1, e.clientX / window.innerWidth));
+            
+            // Mapeia para a duração do vídeo
+            targetTime = mouseRatio * video.duration;
 
-            const delta = e.clientX - prevX;
-            prevX = e.clientX;
-
-            if (delta === 0) return;
-
-            const timeOffset = (delta / window.innerWidth) * sensitivity * video.duration;
-            let nextTarget = targetTime + timeOffset;
-
-            nextTarget = Math.max(0, Math.min(video.duration, nextTarget));
-            targetTime = nextTarget;
-
-            if (!isSeeking) {
-                isSeeking = true;
-                video.currentTime = nextTarget;
+            if (!isAnimationFrameActive) {
+                isAnimationFrameActive = true;
+                requestAnimationFrame(updateVideoSeek);
             }
         }, { passive: true });
-
-        window.addEventListener('mouseleave', () => {
-            prevX = null;
-        });
     }
 
     /* 4. HIGHLIGHT */
     const highlights = document.querySelectorAll('.highlight');
 
     if (highlights.length > 0) {
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                    observer.unobserve(entry.target);
-                }
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries, observerInstance) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        observerInstance.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2,
+                rootMargin: '0px 0px -20px 0px'
             });
-        }, {
-            threshold: 0.2,
-            rootMargin: '0px 0px -50px 0px'
-        });
 
-        highlights.forEach(highlight => observer.observe(highlight));
+            highlights.forEach(highlight => observer.observe(highlight));
+        } else {
+            // Fallback caso o navegador não suporte IntersectionObserver
+            highlights.forEach(highlight => highlight.classList.add('animate'));
+        }
     }
 
     /* 5. MOUSE SPOTLIGHT ON GLASS CARDS */
-    document.querySelectorAll('.glass-card').forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cards = document.querySelectorAll('.glass-card');
+
+    cards.forEach(card => {
+        let animationFrameId = null;
+
+        card.addEventListener('mousemove', (e) => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+
+            animationFrameId = requestAnimationFrame(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        card.addEventListener('mouseleave', () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
         });
     });
+}
 
     /* 6. PROJECTS CAROUSEL (3 : 3) */
     const track = document.getElementById('projectsTrack');
@@ -422,27 +450,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (track && prevBtn && nextBtn && wrapper) {
         let currentIndex = 0;
+        let resizeTimer;
 
         const isMobile = () => window.innerWidth <= 768;
+
+        const getGap = () => {
+            const style = window.getComputedStyle(track);
+            const gap = parseFloat(style.gap || style.columnGap);
+            return isNaN(gap) ? (isMobile() ? 16 : 24) : gap;
+        };
 
         const updateCarousel = () => {
             const card = track.querySelector('.project-card');
             if (!card) return;
 
+            const gap = getGap();
+
             if (isMobile()) {
-                const cardWidth = card.getBoundingClientRect().width + 16;
+                track.style.transform = ''; // Limpa estilo inline de desktop
+                const cardWidth = card.getBoundingClientRect().width + gap;
                 wrapper.scrollTo({
                     left: currentIndex * cardWidth,
                     behavior: 'smooth'
                 });
             } else {
                 const cardsPerView = 3;
-                const cardWidth = card.getBoundingClientRect().width + 24;
+                const cardWidth = card.getBoundingClientRect().width + gap;
                 track.style.transform = `translateX(-${currentIndex * cardWidth * cardsPerView}px)`;
             }
         };
 
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const totalCards = track.children.length;
             const maxIndex = isMobile() ? totalCards - 1 : Math.max(0, Math.ceil(totalCards / 3) - 1);
 
@@ -454,7 +493,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCarousel();
         });
 
-        prevBtn.addEventListener('click', () => {
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const totalCards = track.children.length;
             const maxIndex = isMobile() ? totalCards - 1 : Math.max(0, Math.ceil(totalCards / 3) - 1);
 
@@ -466,119 +506,154 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCarousel();
         });
 
+        // Atualiza o índice durante o swipe manual em Mobile
         wrapper.addEventListener('scroll', () => {
             if (isMobile()) {
                 const card = track.querySelector('.project-card');
                 if (card) {
-                    const cardWidth = card.getBoundingClientRect().width + 16;
-                    currentIndex = Math.round(wrapper.scrollLeft / cardWidth);
+                    const gap = getGap();
+                    const cardWidth = card.getBoundingClientRect().width + gap;
+                    if (cardWidth > 0) {
+                        currentIndex = Math.round(wrapper.scrollLeft / cardWidth);
+                    }
                 }
             }
-        });
+        }, { passive: true });
 
-        window.addEventListener('resize', updateCarousel);
+        // Debounce no evento de resize para manter boa performance
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(updateCarousel, 150);
+        });
     }
 
     /* 7. STEP CONTACT FORM WITH ANIMATIONS & SUBMISSION */
     const steps = document.querySelectorAll('.step-item');
-    let currentStep = 0;
-
-    function showStep(index) {
-        steps.forEach((step, idx) => {
-            step.classList.remove('exit');
-            if (idx === index) {
-                step.classList.add('active');
-                const input = step.querySelector('.step-input');
-                if (input && index > 0) {
-                    setTimeout(() => input.focus(), 300);
-                }
-            } else {
-                step.classList.remove('active');
-            }
-        });
-    }
-
-    function nextStep() {
-        const activeStep = steps[currentStep];
-        const currentInput = activeStep.querySelector('.step-input');
-        
-        if (currentInput && !currentInput.checkValidity()) {
-            currentInput.reportValidity();
-            return;
-        }
-
-        activeStep.classList.add('exit');
-        activeStep.classList.remove('active');
-
-        setTimeout(() => {
-            if (currentStep < steps.length - 1) {
-                currentStep++;
-                showStep(currentStep);
-            } else {
-                submitForm();
-            }
-        }, 300);
-    }
-
-    async function submitForm() {
-        const formData = {
-            name: document.getElementById('userName')?.value || '',
-            company: document.getElementById('userCompany')?.value || '',
-            email: document.getElementById('userEmail')?.value || '',
-            project: document.getElementById('userProject')?.value || ''
-        };
-
-        try {
-            const response = await fetch('https://formspree.io/f/xrpbeepy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
-                steps.forEach(step => {
-                    step.classList.remove('active');
-                    step.classList.remove('exit');
-                });
-                
-                const stepHeader = document.querySelector('.step-header');
-                if (stepHeader) stepHeader.style.display = 'none';
-
-                const successMessage = document.getElementById('stepSuccess');
-                if (successMessage) {
-                    successMessage.classList.add('active');
-                }
-            } else {
-                alert('Ocorreu um erro ao enviar a mensagem. Tente novamente.');
-            }
-        } catch (error) {
-            console.error('Erro de envio:', error);
-            alert('Erro de ligação ao servidor.');
-        }
-    }
-
-    steps.forEach((step) => {
-        const btnNext = step.querySelector('.btn-step-next');
-        const input = step.querySelector('.step-input');
-
-        if (btnNext) {
-            btnNext.addEventListener('click', nextStep);
-        }
-
-        if (input) {
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    nextStep();
-                }
-            });
-        }
-    });
 
     if (steps.length > 0) {
+        let currentStep = 0;
+        let isSubmitting = false;
+
+        function showStep(index) {
+            steps.forEach((step, idx) => {
+                step.classList.remove('exit');
+                if (idx === index) {
+                    step.classList.add('active');
+                    const input = step.querySelector('.step-input');
+                    if (input) {
+                        setTimeout(() => input.focus(), 300);
+                    }
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        function nextStep() {
+            if (isSubmitting) return;
+
+            const activeStep = steps[currentStep];
+            if (!activeStep) return;
+
+            const currentInput = activeStep.querySelector('.step-input');
+            
+            if (currentInput && !currentInput.checkValidity()) {
+                currentInput.reportValidity();
+                return;
+            }
+
+            activeStep.classList.add('exit');
+            activeStep.classList.remove('active');
+
+            setTimeout(() => {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                } else {
+                    submitForm();
+                }
+            }, 300);
+        }
+
+        async function submitForm() {
+            if (isSubmitting) return;
+            isSubmitting = true;
+
+            const lastBtn = steps[currentStep]?.querySelector('.btn-step-next');
+            if (lastBtn) {
+                lastBtn.disabled = true;
+                lastBtn.style.opacity = '0.5';
+            }
+
+            const formData = {
+                name: document.getElementById('userName')?.value || '',
+                company: document.getElementById('userCompany')?.value || '',
+                email: document.getElementById('userEmail')?.value || '',
+                project: document.getElementById('userProject')?.value || ''
+            };
+
+            try {
+                const response = await fetch('https://formspree.io/f/xrpbeepy', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    steps.forEach(step => {
+                        step.classList.remove('active', 'exit');
+                    });
+                    
+                    const stepHeader = document.querySelector('.step-header');
+                    if (stepHeader) stepHeader.style.display = 'none';
+
+                    const successMessage = document.getElementById('stepSuccess');
+                    if (successMessage) {
+                        successMessage.classList.add('active');
+                    }
+                } else {
+                    alert('Ocorreu um erro ao enviar a mensagem. Tente novamente.');
+                    if (lastBtn) {
+                        lastBtn.disabled = false;
+                        lastBtn.style.opacity = '1';
+                    }
+                    isSubmitting = false;
+                }
+            } catch (error) {
+                console.error('Erro de envio:', error);
+                alert('Erro de ligação ao servidor.');
+                if (lastBtn) {
+                    lastBtn.disabled = false;
+                    lastBtn.style.opacity = '1';
+                }
+                isSubmitting = false;
+            }
+        }
+
+        steps.forEach((step) => {
+            const btnNext = step.querySelector('.btn-step-next');
+            const input = step.querySelector('.step-input');
+
+            if (btnNext) {
+                btnNext.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    nextStep();
+                });
+            }
+
+            if (input) {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        nextStep();
+                    }
+                });
+            }
+        });
+
         showStep(0);
     }
 
@@ -592,53 +667,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePrivacy = document.getElementById('closePrivacy');
     const closeCookies = document.getElementById('closeCookies');
 
+    // Abrir Privacidade
     if (openPrivacy && privacyModal) {
-        openPrivacy.addEventListener('click', () => privacyModal.classList.add('active'));
+        openPrivacy.addEventListener('click', (e) => {
+            e.preventDefault();
+            privacyModal.classList.add('active');
+        });
     }
 
+    // Abrir Cookies
     if (openCookies && cookiesModal) {
-        openCookies.addEventListener('click', () => cookiesModal.classList.add('active'));
+        openCookies.addEventListener('click', (e) => {
+            e.preventDefault();
+            cookiesModal.classList.add('active');
+        });
     }
 
+    // Fechar Privacidade
     if (closePrivacy && privacyModal) {
-        closePrivacy.addEventListener('click', () => privacyModal.classList.remove('active'));
+        closePrivacy.addEventListener('click', () => {
+            privacyModal.classList.remove('active');
+        });
     }
 
+    // Fechar Cookies
     if (closeCookies && cookiesModal) {
-        closeCookies.addEventListener('click', () => cookiesModal.classList.remove('active'));
+        closeCookies.addEventListener('click', () => {
+            cookiesModal.classList.remove('active');
+        });
     }
 
+    // Fechar ao clicar fora do conteúdo do modal (no backdrop)
     window.addEventListener('click', (e) => {
-        if (e.target === privacyModal) privacyModal.classList.remove('active');
-        if (e.target === cookiesModal) cookiesModal.classList.remove('active');
+        if (privacyModal && e.target === privacyModal) {
+            privacyModal.classList.remove('active');
+        }
+        if (cookiesModal && e.target === cookiesModal) {
+            cookiesModal.classList.remove('active');
+        }
     });
 
-    /* 9. HAMBURGUER MENU */
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const navMenu = document.getElementById('navMenu');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    if (hamburgerBtn && navMenu) {
-        hamburgerBtn.addEventListener('click', () => {
-            hamburgerBtn.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburgerBtn.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
-    }
+    // Fechar modais ao pressionar a tecla ESC
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (privacyModal) privacyModal.classList.remove('active');
+            if (cookiesModal) cookiesModal.classList.remove('active');
+        }
+    });
 
     /* 10. CARROUSEL MOBILE */
     if (window.innerWidth <= 768) {
-        const track = document.querySelector('.projects-track');
-        const cards = document.querySelectorAll('.project-card:not(.card-coming-soon)');
-        const carouselWrapper = document.querySelector('.carousel-wrapper');
+    const track = document.querySelector('.projects-track');
+    const cards = document.querySelectorAll('.project-card:not(.card-coming-soon)');
+    const carouselWrapper = document.querySelector('.carousel-wrapper');
 
-        if (track && cards.length > 0) {
+    if (track && cards.length > 0) {
+        
+        // Verifica suporte ao IntersectionObserver
+        if ('IntersectionObserver' in window) {
             const observerOptions = {
                 root: carouselWrapper || null,
                 threshold: 0.5
@@ -654,21 +740,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }, observerOptions);
 
             cards.forEach(card => observer.observe(card));
-
-            let swipeTimeout;
-
-            track.addEventListener('touchstart', () => {
-                track.classList.add('is-swiping');
-                clearTimeout(swipeTimeout);
-            }, { passive: true });
-
-            track.addEventListener('touchend', () => {
-                swipeTimeout = setTimeout(() => {
-                    track.classList.remove('is-swiping');
-                }, 150);
-            });
         }
+
+        // Lógica de feedback ao arrastar (Swiping)
+        let swipeTimeout;
+
+        const removeSwipingClass = () => {
+            swipeTimeout = setTimeout(() => {
+                track.classList.remove('is-swiping');
+            }, 150);
+        };
+
+        track.addEventListener('touchstart', () => {
+            track.classList.add('is-swiping');
+            clearTimeout(swipeTimeout);
+        }, { passive: true });
+
+        track.addEventListener('touchend', removeSwipingClass);
+        track.addEventListener('touchcancel', removeSwipingClass);
     }
+}
 
     /* 11. LANGUAGES & MULTILANGUAGE SELECTOR */
     const langSelector = document.getElementById("langSelector");
@@ -676,40 +767,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentLangText = document.getElementById("currentLangText");
     const langOptionsContainer = document.querySelector(".lang-options");
 
-    // Carrega idioma salvo ou usa ES
-    const initialLang = localStorage.getItem('kore_lang') || 'ES';
-    if (currentLangText) currentLangText.textContent = initialLang;
-    applyLanguage(initialLang);
+    // Carrega o idioma salvo no localStorage ou usa 'ES' como padrão
+    const initialLang = localStorage.getItem("kore_lang") || "ES";
 
+    // Define o texto inicial e aplica as traduções
+    if (currentLangText) {
+        currentLangText.textContent = initialLang;
+    }
+    if (typeof applyLanguage === "function") {
+        applyLanguage(initialLang);
+    }
+
+    // Lógica de abertura/fecho do dropdown e seleção de idioma
     if (langSelector && langBtn) {
+        // Alterna o menu ao clicar no botão
         langBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             langSelector.classList.toggle("open");
         });
 
+        // Fecha o dropdown se clicar fora dele
         document.addEventListener("click", (e) => {
             if (!langSelector.contains(e.target)) {
                 langSelector.classList.remove("open");
             }
         });
 
+        // Troca de idioma ao clicar numa opção
         if (langOptionsContainer) {
             langOptionsContainer.addEventListener("click", (e) => {
                 const option = e.target.closest(".lang-option");
                 if (!option) return;
 
-                const oldLang = currentLangText.textContent;
+                const oldLang = currentLangText ? currentLangText.textContent : initialLang;
                 const newLang = option.getAttribute("data-lang");
 
-                currentLangText.textContent = newLang;
+                if (currentLangText) {
+                    currentLangText.textContent = newLang;
+                }
 
                 option.setAttribute("data-lang", oldLang);
                 option.textContent = oldLang;
 
                 langSelector.classList.remove("open");
 
-                // Aplica as traduções
-                applyLanguage(newLang);
+                // Aplica as traduções e guarda no localStorage
+                localStorage.setItem("kore_lang", newLang);
+                if (typeof applyLanguage === "function") {
+                    applyLanguage(newLang);
+                }
             });
         }
     }

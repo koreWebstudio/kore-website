@@ -1811,6 +1811,47 @@ a.project-card {
 
 @media screen and (max-width: 480px) {
 
+    .hero-title {
+        font-size: 1rem;
+        line-height: 1.15;
+    }
+
+    .btn-step-next {
+        display: none;
+    }
+    .story-wrapper > .badge-tag{
+        font-size: 1rem;
+    }
+
+    .legal-modal-content h2 {
+        display: none;
+    }
+
+    .legal-text p {
+        font-size: 0.8rem;
+    }
+
+    .legal-modal-content{
+        padding: none;
+
+    }
+    .navbar {
+        height: 60px;
+        padding-top: 10px;
+    }
+
+    .hero, #hero {
+        padding-top: 110px;
+    }
+
+    .hero, #hero {
+        padding-top: 100px; /* Cria o recuo necessário abaixo do header */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
     /* 1. Navbar e Espaçamentos */
     .navbar {
         padding: 12px 16px; /* Reduz a margem das bordas da ecrã */

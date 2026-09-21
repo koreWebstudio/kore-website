@@ -1316,12 +1316,6 @@ a.project-card {
     transition: all 0.3s ease;
 }
 
-.btn-primary {
-    background: #F5A623;
-    color: #0a0f1d;
-    border: 1px solid #F5A623;
-}
-
 .btn-primary:hover {
     background: #e09216;
     box-shadow: 0 0 15px rgba(245, 166, 35, 0.4);

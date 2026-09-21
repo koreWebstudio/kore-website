@@ -23,7 +23,7 @@ body {
 
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-    background-image: url('background1.jpeg');
+    background-image: url('assets/background1.jpeg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

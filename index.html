@@ -93,9 +93,13 @@
                         <a href="#" 
                         class="btn btn-primary" 
                         data-i18n="hero.btn"
-                        onclick="Calendly.initPopupWidget({
-                            url: 'https://calendly.com/korewebstudio/30min?hide_landing_page_details=1&primary_color=073f8c&background_color=FFFFFF&text_color=073f8c'
-                        }); return false;">
+                        onclick="
+                            const lang = (document.getElementById('currentLangText')?.innerText || 'es').toLowerCase();
+                            Calendly.initPopupWidget({
+                                url: 'https://calendly.com/korewebstudio/30min?hide_landing_page_details=1&primary_color=073f8c&background_color=FFFFFF&text_color=073f8c&locale=' + lang
+                            }); 
+                            return false;
+                        ">
                             Agendá tu primera charla
                         </a>
                     </div><!--/hero-actions-->

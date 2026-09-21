@@ -1512,7 +1512,7 @@ a.project-card {
     }
     
     .logo-img {
-        height: 32px; 
+        height: 80px; 
     }
 
     .navbar .container {
@@ -1789,18 +1789,6 @@ a.project-card {
     }
 }
 
-@media screen and (max-height: 720px) {
-    
-    .hero-container {
-        padding: 80px;
-    }
-
-     .roles-wrapper {
-        width: 100%;
-        gap: 14px;
-    }
-}
-
 
 @media screen and (max-height: 680px) {
     .projects {
@@ -1891,6 +1879,31 @@ a.project-card {
     body {
         background-attachment: scroll;
     }
+
+    .footer-legal,
+    .footer-links {
+        gap: 10px;
+    }
+
+    .legal-modal-content {
+    position: relative;
+    max-width: 650px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 30px;
+    background: rgba(18, 22, 30, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
 
 }
 

@@ -654,15 +654,10 @@ document.addEventListener('DOMContentLoaded', () => {
     /* 11. LANGUAGES & MULTILANGUAGE SELECTOR */
     const langSelector = document.getElementById("langSelector");
     const langBtn = document.getElementById('langBtn');
-    if (langBtn) {
-        langBtn.addEventListener('click', () => {
-            // tua lógica aqui
-        });
-    }
     const currentLangText = document.getElementById("currentLangText");
     const langOptionsContainer = document.querySelector(".lang-options");
 
-    // Carrega idioma salvo ou usa ES
+    // Carrega idioma salvo ou usa ES por defeito
     const initialLang = localStorage.getItem('kore_lang') || 'ES';
     if (currentLangText) currentLangText.textContent = initialLang;
     applyLanguage(initialLang);
@@ -694,6 +689,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 langSelector.classList.remove("open");
 
+                // MUDANÇA 1: Salva o novo idioma escolhido no localStorage
+                localStorage.setItem('kore_lang', newLang);
+
                 // Aplica as traduções
                 applyLanguage(newLang);
             });
@@ -701,3 +699,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+
+   //12. CALENDLY POPUP INTEGRATION
+function openCalendly() {
+    const currentLang = (document.getElementById('currentLangText')?.innerText || 'es').toLowerCase();
+
+    Calendly.initPopupWidget({
+        url: `https://calendly.com/korewebstudio/30min?hide_landing_page_details=1&primary_color=073f8c&background_color=FFFFFF&text_color=073f8c&locale=${currentLang}`
+    });
+}

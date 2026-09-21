@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Kore.</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="icon" type="image/png" href="/korewebstudio/assets/logo1.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+        <!-- Calendly Widget CSS & JS -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <!-- SEO Fundamental -->
+        <title>Kore — Desenho & Desenvolvimento Web 3D</title>
+        <meta name="description" content="Criação de websites modernos, experiências 3D interativas e integrações de API personalizadas. Eleve a sua presença digital com a Kore.">
+        <meta name="keywords" content="desenvolvimento web, websites 3D, design web, criação de sites, porto, portugal, apis, landing pages">
+        <meta name="author" content="Kore">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://kore.pt/"> <!-- Substitui pelo teu domínio final -->
+
+        <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://kore.pt/">
+        <meta property="og:title" content="Kore — Desenho & Desenvolvimento Web 3D">
+        <meta property="og:description" content="Websites modernos e experiências digitais 3D de alta performance.">
+        <meta property="og:image" content="https://kore.pt/assets/og-image.jpg"> <!-- Imagem de pré-visualização (1200x630px) -->
+
+        <!-- Twitter / X -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Kore — Desenho & Desenvolvimento Web 3D">
+        <meta name="twitter:description" content="Websites modernos e experiências digitais 3D de alta performance.">
+        <meta name="twitter:image" content="https://kore.pt/assets/og-image.jpg">
+
+        <!-- Favicon & Mobile Icons -->
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    </head>
+
+    <body>
+
+        <video autoplay muted loop playsinline id="bg-video-mobile">
+            <source src="assets/bg-video-mobile.mp4" type="video/mp4">
+        </video>
+
+       <header class="navbar">
+            <div class="container reveal">
+                
+                <!-- Logo à esquerda -->
+                <a href="#hero" class="nav-logo" aria-label="Kore - Inicio">
+                    <img src="assets/logo1.png" alt="Kore Logo" class="logo-img">
+                </a>
+
+                <!-- Bloco de navegação e ações à direita -->
+                <div class="nav-right">
+                    
+                    <nav class="nav-menu" id="navMenu">
+                        <a href="#nosotros" class="nav-link" data-i18n="nav.about">Nosotros</a>
+                        <a href="#proyectos" class="nav-link" data-i18n="nav.projects">Proyectos</a>
+                        <a href="#contacto" class="nav-link" data-i18n="nav.contact">Contacto</a>
+                    </nav>
+
+                    <div class="nav-actions">
+                        <!-- Seletor de Idioma -->
+                        <div class="lang-selector" id="langSelector">
+                            <button class="lang-btn main-lang" id="langBtn" aria-label="Seleccionar idioma" data-i18n-aria="nav.lang_label">
+                                <span id="currentLangText">ES</span>
+                            </button>
+                            <div class="lang-options">
+                                <button class="lang-option" data-lang="ES">ES</button>
+                                <button class="lang-option" data-lang="PT">PT</button>
+                                <button class="lang-option" data-lang="EN">EN</button>
+                            </div><!--lang-options-->
+                        </div><!--lang-selector-->
+                </div><!--/nav-right-->
+            </div><!--container-->
+        </header>
+
+        <section class="hero" id="hero">
+            <div class="container hero-container reveal-left">
+
+                <!-- Left side: Commercial Text -->
+                <div class="hero-content">
+                    <span class="badge-tag" data-i18n="hero.badge">&lt;Web_Studio /&gt;</span>
+                    
+                    <h1 class="hero-title" data-i18n="hero.title">Código <span class="highlight">escrito</span> a mano, no generado en serie.</h1>
+                    <p class="hero-text" data-i18n="hero.text">Mientras la web se llena de copias automáticas y plantillas repetidas, nosotros diseñamos y programamos desde cero. Un estudio boutique donde cada línea de código tiene una intención real.</p>
+
+                    <div class="hero-actions">
+                        <a href="#" 
+                        class="btn btn-primary" 
+                        data-i18n="hero.btn"
+                        onclick="Calendly.initPopupWidget({
+                            url: 'https://calendly.com/korewebstudio/30min?hide_landing_page_details=1&primary_color=073f8c&background_color=FFFFFF&text_color=073f8c'
+                        }); return false;">
+                            Agendá tu primera charla
+                        </a>
+                    </div><!--/hero-actions-->
+                </div><!--/hero-content-->
+
+                <!-- Right side: Video Wrapper -->
+                <div class="hero-3d-wrapper reveal-right">
+                    <div class="spotlight-glow"></div>
+                    
+                    <video id="characterVideo" muted playsinline preload="auto">
+                        <source src="assets/Characters_animation.mp4" type="video/mp4">
+                    </video>
+                </div><!--/hero-3d-wrapper-->
+
+            </div><!--/container-->
+        </section><!--/hero-->
+
+        <section class="about" id="nosotros">
+            <div class="container about-container">
+
+                <div class="story-wrapper reveal-left">
+                    <span class="badge-tag" data-i18n="about.badge">&lt;El Manifiesto & El Equipo /&gt;</span>
+                    <h2 class="about-title" data-i18n="about.title">Sin intermediarios, sin atajos. <span class="highlight">Solo nosotros</span> y tu proyecto.</h2>
+                    <p class="about-text" data-i18n="about.text">Acá no hay agencias gigantes ni intermediarios. Somos un estudio de dos personas enfocado en lo esencial: diseñar con criterio y programar cada proyecto desde cero, hablando siempre de igual a igual.</p>
+                </div><!--/story-wrapper-->
+
+                <div class="roles-wrapper">
+                    <div class="glass-card reveal delay-1">
+                        <span class="card-num">01</span>
+                        <div class="glass-card-content">
+                            <h3 data-i18n="roles.card1_title">Código a Medida</h3>
+                            <p data-i18n="roles.card1_text">Desarrollo técnico a medida, limpio y estructurado línea por línea desde cero.</p>
+                        </div><!--/glass-card-content-->
+                    </div><!--/glass-card-->
+
+                    <div class="glass-card reveal delay-2">
+                        <span class="card-num">02</span>
+                        <div class="glass-card-content">
+                            <h3 data-i18n="roles.card2_title">Diseño & UX</h3>
+                            <p data-i18n="roles.card2_text">Interfaces cuidadas al detalle para retener y convertir a tus clientes.</p>
+                        </div><!--/glass-card-content-->
+                    </div><!--/glass-card-->
+
+                    <div class="glass-card reveal delay-3">
+                        <span class="card-num">03</span>
+                        <div class="glass-card-content">
+                            <h3 data-i18n="roles.card3_title">Comunicación Real</h3>
+                            <p data-i18n="roles.card3_text">Acompañamiento directo sin intermediarios en todo el proceso.</p>
+                        </div><!--/glass-card-content-->
+                    </div><!--/glass-card-->
+                </div><!--/roles-wrapper-->
+
+            </div><!--/container-->
+        </section><!--/about-->
+
+        <section class="projects" id="proyectos">
+            <div class="container projects-container">
+                <div class="projects-header reveal">
+                    <span class="badge-tag" data-i18n="projects.badge">&lt;Proyectos /&gt;</span>
+                    <h2 class="projects-title" data-i18n="projects.title">Una muestra de cómo <span class="highlight">llevamos el desarrollo</span> a medida a la práctica.</h2>
+                </div><!--/projects-header-->
+
+                <!-- CAROUSEL -->
+                <div class="carousel-main-layout">
+                    <button class="carousel-btn prev-btn" id="prevBtn" aria-label="Anterior" data-i18n-aria="projects.prev">&larr;</button>
+
+                    <div class="carousel-wrapper reveal">
+                        <div class="projects-track" id="projectsTrack">
+                            
+                            <!-- Card 01: Lucas Favieri -->
+                            <a href="https://lucasfavieri.github.io/" target="_blank" rel="noopener noreferrer" class="project-card glass-card">
+                                <!-- Fixed Content (Left) -->
+                                <div class="project-card-wrapper">
+                                    <span class="badge-tag">01</span>
+                                    <div class="project-card-content">
+                                        <h3 class="card-title" data-i18n="project1.title">Lucas Favieri Portafolio</h3>
+                                        <p class="card-description" data-i18n="project1.description">Interactive Web & 3D</p>
+                                    </div>
+                                </div>
+
+                                <!-- Expandable Preview (Right) -->
+                                <div class="card-live-preview">
+                                    <img src="assets/thumb1.png" alt="Preview do site Lucas Favieri" class="preview-img">
+                                </div>
+                            </a><!--/project-card-->
+
+                            <!-- Card 02: Coming Soon -->
+                            <div class="project-card glass-card card-coming-soon">
+                                <div class="coming-soon-wrapper">
+                                    <span class="badge-tag">02</span>
+                                    <div class="coming-soon-content">
+                                        <i class="fa-solid fa-code-commit coming-soon-icon"></i>
+                                        <h3 class="coming-soon-title" data-i18n="coming-soon.title">Próximamente</h3>
+                                        <p class="coming-soon-text" data-i18n="coming-soon.text">Estamos preparando un nuevo proyecto increíble.</p>
+                                    </div><!--/coming-soon-content-->
+                                </div><!--/coming-soon-wrapper-->
+                            </div><!--/project-card-->
+
+                            <!-- Card 03: Coming Soon -->
+                            <div class="project-card glass-card card-coming-soon">
+                                <div class="coming-soon-wrapper">
+                                    <span class="badge-tag">03</span>
+                                    <div class="coming-soon-content">
+                                        <i class="fa-solid fa-code-commit coming-soon-icon"></i>
+                                        <h3 class="coming-soon-title" data-i18n="coming-soon.title">Próximamente</h3>
+                                        <p class="coming-soon-text" data-i18n="coming-soon.text">Estamos preparando un nuevo proyecto increíble.</p>
+                                    </div><!--/coming-soon-content-->
+                                </div><!--/coming-soon-wrapper-->
+                            </div><!--/project-card-->
+
+                        </div><!--/projects-track-->
+                    </div><!--/carousel-wrapper-->
+
+                    <button class="carousel-btn next-btn" id="nextBtn" aria-label="Siguiente" data-i18n-aria="projects.next">&rarr;</button>
+                </div><!--/carousel-main-layout-->
+
+            </div><!--/container-->
+        </section><!--/projects-->
+
+        <section class="contact" id="contacto">
+             <div class="contact-container">
+
+                <div class="step-header reveal-left">
+                    <h2 class="step-title" data-i18n="contact.title">¿Tenés <span class="highlight">ganas</span> de ver qué podemos <span class="step-title-highight">hacer juntos?</span> <br>Hablemos de tu proyecto...</h2>
+                </div>
+
+                <div class="glass-card reveal delay-2">
+                <form id="interactiveForm" onsubmit="return false;" action="https://formspree.io/f/xrpbeepy" method="POST">
+
+                    <!-- Step 1: Name -->
+                    <div class="step-item active" data-step="1">
+                        <label class="step-label" data-i18n="contact.name">¿Cómo te llamas?</label>
+                        <div class="input-wrapper">
+                            <input name="name" type="text" id="userName" class="step-input" data-i18n-placeholder="step.placeholder_type placeholder="Empieza a escribir" autocomplete="off" required>
+                            <button type="button" class="btn-step-next" aria-label="Next step">&rarr;</button>
+                        </div><!--input-wrapper-->
+                    </div><!--step-item active-->
+
+                    <!-- Step 2: Organization -->
+                    <div class="step-item" data-step="2">
+                        <label class="step-label" data-i18n="contact.company">¿Cuál es el nombre de tu proyecto?</label>
+                        <div class="input-wrapper">
+                            <input name="company" type="text" id="userCompany" class="step-input" data-i18n-placeholder="step.placeholder_type" placeholder="Empieza a escribir" autocomplete="off">
+                            <button type="button" class="btn-step-next" aria-label="Next step">&rarr;</button>
+                        </div><!--input-wrapper-->
+                    </div><!--step-item-->
+
+                    <!-- Step 3: Email -->
+                    <div class="step-item" data-step="3">
+                        <label class="step-label" data-i18n="contact.email">¿Cuál es tu dirección de correo electrónico?</label>
+                        <div class="input-wrapper">
+                            <input name="email" type="email" id="userEmail" class="step-input" placeholder="name@domain.com" autocomplete="off" required>
+                            <button type="button" class="btn-step-next" aria-label="Next step">&rarr;</button>
+                        </div><!--input-wrapper-->
+                    </div><!--step-item-->
+
+                    <!-- Sept 4: Message / Project Details -->
+                    <div class="step-item" data-step="4">
+                        <label class="step-label" data-i18n="contact.message">¿Cómo podemos ayudarte?</label>
+                        <div class="input-wrapper">
+                            <input name="message" type="text" id="userProject" class="step-input" data-i18n-placeholder="step.placeholder_type" placeholder="Empieza a escribir..." autocomplete="off" required>
+                            <button type="button" class="btn-step-next btn-submit" aria-label="Submit">&rarr;</button>
+                        </div><!--input-wrapper-->
+                    </div><!--step-item-->
+
+                    <!-- Sucess Message -->
+                    <div class="step-success" id="stepSuccess">
+                        <h3 data-i18n="step.success_title">¡Gracias!</h3>
+                        <p data-i18n="step.success_text">Hemos recibido su solicitud y nos pondremos en contacto con usted en breve.</p>
+                    </div><!--step-success-->
+
+                </form>
+                </div><!--glass-card-->
+                
+            </div><!--container contact-->
+
+            <footer class="footer-bottom">
+
+                <div class="footer-legal">
+                    <a href="javascript:void(0)" id="openPrivacy" data-i18n="footer.privacy">Privacidad</a>
+                    <a href="javascript:void(0)" id="openCookies" data-i18n="footer.cookies">Cookies</a>
+                </div><!--footer-legal-->
+
+                <p data-i18n="footer.rights">&copy; 2026 Kore. Todos los derechos reservados.</p>
+
+                <div class="footer-links">
+                    <a href="https://www.instagram.com/korewebstudio/?hl=en" target="_blank" rel="noopener">Instagram</a>
+                    <a href="mailto:korewebstudio@gmail.com" data-i18n="footer.email">E-mail</a>
+                </div><!--footer-links-->
+
+            </footer><!--footer-bottom-->
+        </section><!--contact-->
+
+    
+                <!-- MODAL: PRIVACIDADE -->
+                <div id="privacyModal" class="legal-modal">
+                    <div class="legal-modal-content glass-card">
+                        <button class="close-modal" id="closePrivacy">&times;</button>
+                        <h2 data-i18n="privacy.title">Política de Privacidad</h2>
+                        <div class="legal-text">
+                            <p data-i18n="privacy.intro">En <strong>Kore Web Studio</strong> utilizamos cookies esenciales y tecnologías de terceros únicamente para garantizar el correcto funcionamiento de nuestro sitio web, mejorar tu experiencia de navegación y permitir la gestión interactiva de nuestros servicios.</p>
+
+                            <h3 data-i18n="privacy.h3_types">1. ¿Qué tipo de cookies utilizamos?</h3>
+                            <p data-i18n="privacy.types_p"><strong>Cookies Estrictamente Necesarias y Funcionales:</strong> Son aquellas imprescindibles para navegar por el sitio web y utilizar sus funciones básicas. No almacenamos cookies con fines publicitarios, de rastreo ni para la venta de datos a terceros.</p>
+
+                            <h3 data-i18n="privacy.h3_services">2. Servicios de Terceros e Integraciones</h3>
+                            <p data-i18n="privacy.services_p">Para ofrecerte una experiencia completa, integramos los siguientes servicios externos que pueden generar cookies técnicas o de sesión durante su uso:</p>
+                            <ul>
+                                <li data-i18n="privacy.calendly">
+                                    <strong>Calendly:</strong> Al interactuar con nuestro sistema de agendamiento de reuniones, Calendly puede procesar cookies técnicas y de sesión necesarias para verificar la disponibilidad de calendario y gestionar la reserva de tu cita.
+                                </li>
+                                <li data-i18n="privacy.formspree">
+                                    <strong>Formspree:</strong> Al enviar formularios a través de la web, Formspree procesa cookies estrictamente necesarias de seguridad para prevenir el spam e interactuar de forma segura.
+                                </li>
+                            </ul>
+
+                            <h3 data-i18n="privacy.h3_management">3. Gestión y Desactivación de Cookies</h3>
+                            <p data-i18n="privacy.management_p1">Puedes permitir, bloquear o eliminar las cookies instaladas en tu equipo mediante la configuración de las opciones de tu navegador web. Sin embargo, ten en cuenta que la desactivación de cookies técnicas puede afectar el correcto funcionamiento de herramientas interactivas como el agendamiento directo.</p>
+                            <p data-i18n="privacy.management_p2">Si tienes alguna duda sobre nuestra Política de Cookies, puedes contactarnos a través de nuestro formulario de contacto.</p>
+                        </div><!-- legal-text -->
+                    </div><!--legal-modal-content-->
+                </div><!--legal-modal-->
+
+                <!-- MODAL: COOKIES -->
+                <div id="cookiesModal" class="legal-modal">
+                    <div class="legal-modal-content glass-card">
+                        <button class="close-modal" id="closeCookies">&times;</button>
+                        <h2 data-i18n="cookies.title">Política de Cookies</h2>
+                        <div class="legal-text">
+                            <p data-i18n="cookies.intro">Esta web utiliza cookies y tecnologías similares para garantizar el correcto funcionamiento del sitio y mejorar tu experiencia de navegación.</p>
+                            
+                            <h3 data-i18n="cookies.h3_definition">1. ¿Qué es una cookie?</h3>
+                            <p data-i18n="cookies.definition_p">Una cookie es un pequeño archivo de texto que se almacena en tu navegador cuando visitas nuestra página web.</p>
+                            
+                            <h3 data-i18n="cookies.h3_types">2. Tipos de cookies que utilizamos</h3>
+                            <p data-i18n="cookies.type_technical"><strong>Cookies Técnicas / Necesarias:</strong> Permiten la navegación a través de la página web y el uso de las diferentes opciones o servicios que en ella existen (como la animación fluida y el envío del formulario).</p>
+                            <p data-i18n="cookies.type_third_party"><strong>Cookies de Terceros:</strong> Actualmente no utilizamos cookies de rastreo publicitario ni analítica invasiva de terceros.</p>
+                        </div><!-- legal-text -->
+                    </div><!--legal-modal-content-->
+                </div><!--legal-modal-->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
+        <script src="/korewebstudio/script.js"></script>
+        
+
+    </body>
+
+</html>

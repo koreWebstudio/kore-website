@@ -1,42 +1,42 @@
 # 🪐 Kore Web Studio
 
-> **Sin intermediarios, sin atajos. Solo nosotros y tu proyecto.**
+> **No middlemen, no shortcuts. Just us and your project.**
 
-Bienvenido al repositorio oficial de **Kore Web Studio**. Somos un estudio independiente dedicado a diseñar y desarrollar experiencias digitales únicas, combinando estética moderna, modelos 3D interactivos y un desarrollo técnico impecable.
+Welcome to the official repository of **Kore Web Studio**. We are an independent studio dedicated to designing and developing unique digital experiences, combining modern aesthetics, interactive 3D models, and flawless technical development.
 
-🌐 **Sitio Web Oficial:** [kore.pt](https://kore.pt)
-
----
-
-## ✨ Nuestra Filosofía
-
-En Kore no existen agencias gigantes ni intermediarios. Diseñamos con criterio y programamos cada proyecto desde cero para convertir visitas en clientes reales.
-
-* **Código a Medida:** Desarrollo técnico limpio, ligero y personalizado línea por línea.
-* **Diseño & UX Cuidados:** Interfaz intuitiva y atractiva optimizada para retener a los usuarios.
-* **Comunicación Directa:** Acompañamiento cercano durante todo el proceso de desarrollo.
+🌐 **Official Website:** [kore.pt](https://kore.pt)
 
 ---
 
-## 🚀 Experiencia en el Sitio Web
+## ✨ Our Philosophy
 
-Esta landing page ha sido creada para transmitir nuestra identidad visual y ofrecer una navegación interactiva e intuitiva:
+At Kore, there are no massive agencies or middlemen. We design with purpose and code every project from scratch to convert visitors into real clients.
 
-* **Experiencia Visual Imersiva:** Elementos 3D e interfaz con estilo *Glassmorphism*.
-* **Agenda Directa:** Integración fluida con Calendly para reservar sesiones de presentación en pocos clics.
-* **Formulario Conversacional:** Un proceso guiado e interactivo paso a paso para la captación de briefs.
-* **Portafolio Dinámico:** Exposición interactiva de los proyectos realizados por el estudio.
-* **Soporte Multilingüe (i18n):** Configurado para responder a clientes en Español, Portugués e Inglés.
+* **Custom Code:** Clean, lightweight, and tailored technical development, line by line.
+* **Thoughtful Design & UX:** Intuitive and engaging interfaces optimized to retain users.
+* **Direct Communication:** Close support and guidance throughout the entire development process.
 
 ---
 
-## 📬 Contacto & Proyectos
+## 🚀 Website Experience
 
-¿Tienes una idea o proyecto en mente?
+This landing page was built to convey our visual identity and deliver an interactive, intuitive browsing experience:
+
+* **Immersive Visual Experience:** 3D elements and a modern *Glassmorphism* UI.
+* **Direct Scheduling:** Seamless integration with Calendly to book presentation calls in just a few clicks.
+* **Conversational Form:** A guided, step-by-step interactive process for capturing project briefs.
+* **Dynamic Portfolio:** An interactive showcase of projects completed by the studio.
+* **Multi-Language Support (i18n):** Configured to serve clients in Spanish, Portuguese, and English.
+
+---
+
+## 📬 Contact & Projects
+
+Have an idea or a project in mind?
 
 * **Web:** [kore.pt](https://kore.pt)
-* **Agendar una reunión:** Directamente desde nuestro sitio web a través del botón **Agendar Presentación**.
+* **Schedule a Call:** Directly on our website via the **Schedule Presentation** button.
 
 ---
 
-© **Kore Web Studio** — Todos los derechos reservados.
+© **Kore Web Studio** — All rights reserved.

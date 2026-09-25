@@ -1905,6 +1905,36 @@ a.project-card {
 }
 
 
+@media screen and (max-height: 600px) {
+
+    .hero-container{
+        padding: 100px;
+    }
+
+    .hero-3d-wrapper {
+        padding-top: 20px;
+    }
+    .hero-title {
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+
+    .about-title {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+
+    about-card, .about .glass-card {
+        padding: 20px;
+        max-height: 120px;
+    }
+
+    .projects .glass-card {
+        max-height: 300px;
+    }
+
+}
+
 }
 
 /*------------------- Media Queries ----------------------*/
